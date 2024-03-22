@@ -7,6 +7,7 @@
 
 using namespace std;
 
+//Colores formato ANSI
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
 #define GREEN   "\033[32m"
@@ -57,7 +58,7 @@ void print_grid(string**& grid, int num, int curr, int mv) {
         cout<<'\n';
     }
     cout<<'\n';
-    system("sleep 0.2");
+    system(("sleep "+to_string(sleep)).c_str());
 }
 
 
@@ -86,7 +87,7 @@ void bubble_sort(vector<int> &array, int num, string **&grid) {
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        cout<<"Uso: "<<argv[0]<<" [Cantidad] [sleep]\n";
+        cout<<"Uso: "<<argv[0]<<" [Cantidad] {sleep}\n";
         return 1;
     }
     int num=stoi(argv[1]);
@@ -98,7 +99,7 @@ int main(int argc, char* argv[]) {
     vector<int> array(num);
     shuffle_vector(array);
     
-    bool sorted=false;
+    /* bool sorted=false; */
     string **grid;
     create_grid(grid, num, array);
     /* print_grid(grid, num); */
