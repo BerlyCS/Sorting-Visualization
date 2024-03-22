@@ -49,11 +49,11 @@ void print_grid(string**& grid, int num, int curr, int mv) {
     for (int i=0;i<num;i++) {
         for (int j=0;j<num;j++){
             if (j==curr)
-                cout<<RED<<grid[i][j]<<RESET<<flush;
+                cout<<RED<<grid[i][j]<<RESET;
             else if (j==mv)
-                cout<<GREEN<<grid[i][j]<<RESET<<flush;
+                cout<<GREEN<<grid[i][j]<<RESET;
             else
-                cout<<grid[i][j]<<flush;
+                cout<<grid[i][j];
         }
         cout<<'\n';
     }
@@ -85,6 +85,20 @@ void bubble_sort(vector<int> &array, int num, string **&grid) {
     }
 }
 
+void insert_sort(vector<int> &a, int num, string**& grid) {
+    for (int i=0;i<num-1;i++){
+        for (int j=i;j>=0;j--){
+            if (a[j]>a[j+1]){
+                swap(a[j],a[j+1]);
+                swap_grid(grid,num,j,j+1);
+            } else if (a[j]<a[j+1]){
+                break;
+            }
+            print_grid(grid,num, j, j+1);
+        }
+    }
+}
+
 int main(int argc, char* argv[]) {
     if (argc < 2) {
         cout<<"Uso: "<<argv[0]<<" [Cantidad] {sleep}\n";
@@ -103,7 +117,8 @@ int main(int argc, char* argv[]) {
     string **grid;
     create_grid(grid, num, array);
     /* print_grid(grid, num); */
-    bubble_sort(array, num, grid);
+    /* bubble_sort(array, num, grid); */
+    insert_sort(array, num, grid);
     
     for (int i=0;i<num;i++)
         cout<<array[i]<<' ';
