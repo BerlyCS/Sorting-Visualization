@@ -43,6 +43,13 @@ void create_grid(string **&grid, int num, vector<int> array){
     }
 }
 
+void delete_grid(string**& grid, int num){
+    for (int i=0;i<num;i++){
+        delete[] grid[i];
+    }
+    delete[] grid;
+}
+
 
 void swap_grid(string**& grid, int num, int lt, int gt) {
     for (int i=0;i<num;i++) {
@@ -71,6 +78,16 @@ void print_grid(string**& grid, int num, int curr, int mv) {
     system(("sleep "+to_string(sleep)).c_str());
 }
 
+void verify_sort(string **&grid, int num, vector<int> array) {
+    sleep=0.01;
+    for (int i=0;i<array.size()-1;i++){
+        if (array[i]>array[i+1]){
+            cout<<"Hubo un error en el programa\n";
+        }
+        sound[(i/(num/10))%10].play();
+        print_grid(grid, num, i, i+1);
+    }
+}
 
 void shuffle_vector(vector<int> &array){
     int size=array.size();
@@ -136,6 +153,7 @@ int main(int argc, char* argv[]) {
     /* bubble_sort(array, num, grid); */
     insert_sort(array, num, grid);
     
+    verify_sort(grid, num, array);
     for (int i=0;i<num;i++)
         cout<<array[i]<<' ';
 }
