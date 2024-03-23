@@ -1,11 +1,13 @@
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <__errc>
+#include <chrono>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 #include <ostream>
 #include <string>
+#include <thread>
 #include <vector>
 #include <SFML/Audio.hpp>
 
@@ -22,7 +24,7 @@ using namespace std;
 
 sf::SoundBuffer buffer[10];
 sf::Sound sound[10];
-float sleep;
+int sleep;
 
 void create_grid(string **&grid, int num, vector<int> array){
     grid = new string*[num];
@@ -66,20 +68,21 @@ void print_grid(string**& grid, int num, int curr, int mv) {
     for (int i=0;i<num;i++) {
         for (int j=0;j<num;j++){
             if (j==curr)
-                cout<<RED<<grid[i][j]<<RESET;
+                cout<<RED<<grid[i][j]<<RESET<<flush;
             else if (j==mv)
-                cout<<GREEN<<grid[i][j]<<RESET;
+                cout<<GREEN<<grid[i][j]<<RESET<<flush;
             else
-                cout<<grid[i][j];
+                cout<<grid[i][j]<<flush;
         }
         cout<<'\n';
     }
     cout<<'\n';
-    system(("sleep "+to_string(sleep)).c_str());
+    this_thread::sleep_for(chrono::milliseconds(sleep));
+    /* system(("sleep "+to_string(sleep)).c_str()); */
 }
 
 void verify_sort(string **&grid, int num, vector<int> array) {
-    sleep=0.01;
+    sleep=10;
     for (int i=0;i<array.size()-1;i++){
         if (array[i]>array[i+1]){
             cout<<"Hubo un error en el programa\n";
@@ -141,7 +144,7 @@ int main(int argc, char* argv[]) {
     if (argc==3)
         sleep=stof(argv[2]);
     else
-        sleep=0.5;
+        sleep=500;
 
     vector<int> array(num);
     shuffle_vector(array);
