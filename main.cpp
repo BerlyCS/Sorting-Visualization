@@ -2,12 +2,14 @@
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <__errc>
 #include <chrono>
+#include <cstdio>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 #include <ostream>
 #include <string>
 #include <thread>
+#include <utility>
 #include <vector>
 #include <SFML/Audio.hpp>
 
@@ -57,9 +59,6 @@ void swap_grid(string**& grid, int num, int lt, int gt) {
     for (int i=0;i<num;i++) {
         swap(grid[i][lt],grid[i][gt]);
     }
-    
-    sound[int(lt/(num/10))%10].play();
-
 }
 
 void print_grid(string**& grid, int num, int curr, int mv) {
@@ -67,16 +66,29 @@ void print_grid(string**& grid, int num, int curr, int mv) {
 
     for (int i=0;i<num;i++) {
         for (int j=0;j<num;j++){
-            if (j==curr)
-                cout<<RED<<grid[i][j]<<RESET<<flush;
-            else if (j==mv)
-                cout<<GREEN<<grid[i][j]<<RESET<<flush;
-            else
-                cout<<grid[i][j]<<flush;
+            if (j==curr){
+                printf(RED);
+                printf("%s",grid[i][j].c_str());
+                printf(RESET);
+                //cout<<RED<<grid[i][j]<<flush;
+            }
+            else if (j==mv){
+                printf(GREEN);
+                printf("%s",grid[i][j].c_str());
+                printf(RESET);
+                //cout<<GREEN<<grid[i][j]<<RESET<<flush;
+            }
+            else{
+                printf("%s",grid[i][j].c_str());
+                //cout<<grid[i][j]<<flush;
+            }
         }
         cout<<'\n';
     }
     cout<<'\n';
+    
+    sound[int(curr/(num/10))%10].play();
+    
     this_thread::sleep_for(chrono::milliseconds(sleep));
     /* system(("sleep "+to_string(sleep)).c_str()); */
 }
@@ -129,6 +141,21 @@ void insert_sort(vector<int> &a, int num, string**& grid) {
     }
 }
 
+void selection_sort(vector<int>& array, int num, string**& grid){
+    int pointer,max;
+    for (int i=num;i>0;i--) {
+        max=0;
+        for (int j=0;j<i;j++) {
+            if (array[max]<array[j]) {
+                max=j;
+            }
+            print_grid(grid, num, j, max);
+        }
+        swap_grid(grid,num,max,i-1);
+        swap(array[i-1],array[max]);
+    }
+}
+
 int main(int argc, char* argv[]) {
     for (int i=0; i<10; i++){
         buffer[i].loadFromFile("sounds/beep"+to_string(i)+".wav");
@@ -152,11 +179,29 @@ int main(int argc, char* argv[]) {
     /* bool sorted=false; */
     string **grid;
     create_grid(grid, num, array);
-    /* print_grid(grid, num); */
-    /* bubble_sort(array, num, grid); */
-    insert_sort(array, num, grid);
-    
+
+    int opt;
+    cout<<"Selecciona algoritmo:\n"
+        <<"1.Bubble Sort \n"
+        <<"2.Insert Sort \n"
+        <<"3.Selection Sort \n";
+    cin>>opt;
+    switch (opt) {
+        case 1:
+            bubble_sort(array, num, grid);
+            break;
+        case 2:
+            insert_sort(array, num, grid);
+            break;
+        case 3:
+            selection_sort(array, num, grid);
+            break;
+        default:
+            cout<<"Opcion invalida";
+    }
+ 
     verify_sort(grid, num, array);
     for (int i=0;i<num;i++)
         cout<<array[i]<<' ';
+    delete_grid(grid, num);
 }

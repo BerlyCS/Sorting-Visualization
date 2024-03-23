@@ -1,3 +1,4 @@
+#include <array>
 #include <iostream>
 #include <string>
 #include <utility>
@@ -42,17 +43,30 @@ void bubble_sort(vector<int> &array, int num) {
                 swap(array[j], array[j+1]);
             }
             print_vect(array);
-        }
-        
+        } 
     }
 }
 
-using namespace std;
+void selection_sort(vector<int>& array, int num){
+    int pointer,max;
+    for (int i=num;i>=0;i--) {
+        max=0;
+        for (int j=0;j<i;j++) {
+            if (array[max]<array[j]) {
+                max=j;
+            }
+            print_vect(array);
+        }
+        swap(array[i-1],array[max]);
+    }
+}
+
 int main(int argc, char* argv[]) {
     if (argc<2) cout<<"./algo <numero>\n";
     vector<int> a(stoi(argv[1]));
     shuffle_vector(a);
+    selection_sort(a, a.size());
 
-    insert_sort(a, a.size());
+   // insert_sort(a, a.size());
     return 0;
 }
