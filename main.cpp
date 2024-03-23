@@ -1,9 +1,13 @@
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <__errc>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 #include <ostream>
 #include <string>
 #include <vector>
+#include <SFML/Audio.hpp>
 
 using namespace std;
 
@@ -16,6 +20,8 @@ using namespace std;
 #define MAGENTA "\033[35m"
 #define CYAN    "\033[36m"
 
+sf::SoundBuffer buffer[10];
+sf::Sound sound[10];
 float sleep;
 
 void create_grid(string **&grid, int num, vector<int> array){
@@ -37,10 +43,14 @@ void create_grid(string **&grid, int num, vector<int> array){
     }
 }
 
+
 void swap_grid(string**& grid, int num, int lt, int gt) {
     for (int i=0;i<num;i++) {
         swap(grid[i][lt],grid[i][gt]);
     }
+    
+    sound[int(lt/(num/10))%10].play();
+
 }
 
 void print_grid(string**& grid, int num, int curr, int mv) {
@@ -100,6 +110,12 @@ void insert_sort(vector<int> &a, int num, string**& grid) {
 }
 
 int main(int argc, char* argv[]) {
+    for (int i=0; i<10; i++){
+        buffer[i].loadFromFile("sounds/beep"+to_string(i)+".wav");
+        sound[i].setBuffer(buffer[i]);
+    }
+
+
     if (argc < 2) {
         cout<<"Uso: "<<argv[0]<<" [Cantidad] {sleep}\n";
         return 1;
