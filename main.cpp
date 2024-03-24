@@ -2,7 +2,6 @@
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <__errc>
 #include <chrono>
-#include <cstdio>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -12,6 +11,7 @@
 #include <utility>
 #include <vector>
 #include <SFML/Audio.hpp>
+#include <ncurses.h>
 
 using namespace std;
 
@@ -62,30 +62,41 @@ void swap_grid(string**& grid, int num, int lt, int gt) {
 }
 
 void print_grid(string**& grid, int num, int curr, int mv) {
-    system("clear");
+    /* system("clear"); */
 
     for (int i=0;i<num;i++) {
         for (int j=0;j<num;j++){
             if (j==curr){
-                printf(RED);
-                printf("%s",grid[i][j].c_str());
-                printf(RESET);
+                /* printf(RED); */
+                /* printf("%c",grid[i][j]); */
+                /* printf(RESET); */
                 //cout<<RED<<grid[i][j]<<flush;
+                attron(COLOR_PAIR(1));
+                mvaddstr(i,j,grid[i][j].c_str());
+                attroff(1);
             }
             else if (j==mv){
-                printf(GREEN);
-                printf("%s",grid[i][j].c_str());
-                printf(RESET);
+                /* printf(GREEN); */
+                /* printf("%c",grid[i][j]); */
+                /* printf(RESET); */
                 //cout<<GREEN<<grid[i][j]<<RESET<<flush;
+                attron(COLOR_PAIR(2));
+                mvaddstr(i,j,grid[i][j].c_str());
+                attroff(2);
             }
             else{
-                printf("%s",grid[i][j].c_str());
+                /* printf("%c",grid[i][j]); */
                 //cout<<grid[i][j]<<flush;
+                attron(COLOR_PAIR(3));
+                mvaddstr(i,j, grid[i][j].c_str());
+                attroff(3);
             }
         }
-        cout<<'\n';
+        /* cout<<'\n'; */
     }
-    cout<<'\n';
+    refresh();
+    /* cout<<'\n'; */
+
     
     sound[int(curr/(num/10))%10].play();
     
@@ -142,7 +153,7 @@ void insert_sort(vector<int> &a, int num, string**& grid) {
 }
 
 void selection_sort(vector<int>& array, int num, string**& grid){
-    int pointer,max;
+    int max;
     for (int i=num;i>0;i--) {
         max=0;
         for (int j=0;j<i;j++) {
@@ -157,11 +168,6 @@ void selection_sort(vector<int>& array, int num, string**& grid){
 }
 
 int main(int argc, char* argv[]) {
-    for (int i=0; i<10; i++){
-        buffer[i].loadFromFile("sounds/beep"+to_string(i)+".wav");
-        sound[i].setBuffer(buffer[i]);
-    }
-
 
     if (argc < 2) {
         cout<<"Uso: "<<argv[0]<<" [Cantidad] {sleep}\n";
@@ -173,10 +179,14 @@ int main(int argc, char* argv[]) {
     else
         sleep=500;
 
+    for (int i=0; i<10; i++){
+        buffer[i].loadFromFile("sounds/beep"+to_string(i)+".wav");
+        sound[i].setBuffer(buffer[i]);
+    }
+
     vector<int> array(num);
     shuffle_vector(array);
     
-    /* bool sorted=false; */
     string **grid;
     create_grid(grid, num, array);
 
@@ -186,6 +196,21 @@ int main(int argc, char* argv[]) {
         <<"2.Insert Sort \n"
         <<"3.Selection Sort \n";
     cin>>opt;
+    
+    initscr();
+    cbreak();
+    noecho();
+    start_color();
+    if (!has_colors()) {
+        endwin();
+        printf("El terminal no soporta colores.\n");
+        return 1;
+    }
+    curs_set(0);
+    init_pair(1, COLOR_RED, COLOR_BLACK);
+    init_pair(2, COLOR_GREEN, COLOR_BLACK);
+    init_pair(3, COLOR_WHITE, COLOR_BLACK);
+
     switch (opt) {
         case 1:
             bubble_sort(array, num, grid);
@@ -204,4 +229,6 @@ int main(int argc, char* argv[]) {
     for (int i=0;i<num;i++)
         cout<<array[i]<<' ';
     delete_grid(grid, num);
+
+    endwin();
 }
