@@ -1,9 +1,10 @@
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
-#include <__errc>
 #include <chrono>
+#include <clocale>
 #include <cstdlib>
 #include <ctime>
+#include <curses.h>
 #include <iostream>
 #include <ostream>
 #include <string>
@@ -28,26 +29,26 @@ sf::SoundBuffer buffer[10];
 sf::Sound sound[10];
 int sleep;
 
-void create_grid(string **&grid, int num, vector<int> array){
-    grid = new string*[num];
+void create_grid(wchar_t **&grid, int num, vector<int> array){
+    grid = new wchar_t*[num];
     for (int i=0;i<num;i++){
-        grid[i] = new string[num]();
+        grid[i] = new wchar_t[num]();
     }
 
     for (int i =0;i<num;i++){
         int count=array[i];
         for (int j=num-1;j>=0;j--) {
             if (count-- >= 0) {
-                grid[j][i]="█";
+                grid[j][i]=L'█';
             }
             else{
-                grid[j][i]=" ";
+                grid[j][i]=' ';
             }
         }
     }
 }
 
-void delete_grid(string**& grid, int num){
+void delete_grid(wchar_t**& grid, int num){
     for (int i=0;i<num;i++){
         delete[] grid[i];
     }
@@ -55,13 +56,13 @@ void delete_grid(string**& grid, int num){
 }
 
 
-void swap_grid(string**& grid, int num, int lt, int gt) {
+void swap_grid(wchar_t**& grid, int num, int lt, int gt) {
     for (int i=0;i<num;i++) {
         swap(grid[i][lt],grid[i][gt]);
     }
 }
 
-void print_grid(string**& grid, int num, int curr, int mv) {
+void print_grid(wchar_t**& grid, int num, int curr, int mv) {
 
     for (int i=0;i<num;i++) {
         for (int j=0;j<num;j++){
@@ -71,7 +72,7 @@ void print_grid(string**& grid, int num, int curr, int mv) {
                 /* printf(RESET); */
                 //cout<<RED<<grid[i][j]<<flush;
                 attron(COLOR_PAIR(1));
-                mvaddstr(i,j,grid[i][j].c_str());
+                mvaddwstr(i,j,&grid[i][j]);
                 attroff(1);
             }
             else if (j==mv){
@@ -80,14 +81,14 @@ void print_grid(string**& grid, int num, int curr, int mv) {
                 /* printf(RESET); */
                 //cout<<GREEN<<grid[i][j]<<RESET<<flush;
                 attron(COLOR_PAIR(2));
-                mvaddstr(i,j,grid[i][j].c_str());
+                mvaddwstr(i,j,&grid[i][j]);
                 attroff(2);
             }
             else{
                 /* printf("%c",grid[i][j]); */
                 //cout<<grid[i][j]<<flush;
                 attron(COLOR_PAIR(3));
-                mvaddstr(i,j, grid[i][j].c_str());
+                mvaddwstr(i,j, &grid[i][j]);
                 attroff(3);
             }
         }
@@ -100,10 +101,10 @@ void print_grid(string**& grid, int num, int curr, int mv) {
     sound[int(curr/(num/10))%10].play();
     
     this_thread::sleep_for(chrono::milliseconds(sleep));
-    /* system(("sleep "+to_string(sleep)).c_str()); */
+    /* system(("sleep "+to_wchar_t(sleep)).c_str()); */
 }
 
-void verify_sort(string **&grid, int num, vector<int> array) {
+void verify_sort(wchar_t **&grid, int num, vector<int> array) {
     sleep=20;
     for (int i=0;i<array.size()-1;i++){
         if (array[i]>array[i+1]){
@@ -125,7 +126,7 @@ void shuffle_vector(vector<int> &array){
     }
 }
 
-void bubble_sort(vector<int> &array, int num, string **&grid) {
+void bubble_sort(vector<int> &array, int num, wchar_t **&grid) {
     for (int i=num-1;i>=0;i--) {
         for (int j=0;j<i;j++) {
             if (array[j] > array[j+1]) {
@@ -137,7 +138,7 @@ void bubble_sort(vector<int> &array, int num, string **&grid) {
     }
 }
 
-void insert_sort(vector<int> &a, int num, string**& grid) {
+void insert_sort(vector<int> &a, int num, wchar_t**& grid) {
     for (int i=0;i<num-1;i++){
         for (int j=i;j>=0;j--){
             if (a[j]>a[j+1]){
@@ -151,7 +152,7 @@ void insert_sort(vector<int> &a, int num, string**& grid) {
     }
 }
 
-void selection_sort(vector<int>& array, int num, string**& grid){
+void selection_sort(vector<int>& array, int num, wchar_t**& grid){
     int max;
     for (int i=num;i>0;i--) {
         max=0;
@@ -168,6 +169,7 @@ void selection_sort(vector<int>& array, int num, string**& grid){
 
 int main(int argc, char* argv[]) {
 
+    setlocale(LC_ALL, "");
     if (argc < 2) {
         cout<<"Uso: "<<argv[0]<<" [Cantidad] {sleep}\n";
         return 1;
@@ -186,7 +188,7 @@ int main(int argc, char* argv[]) {
     vector<int> array(num);
     shuffle_vector(array);
     
-    string **grid;
+    wchar_t **grid;
     create_grid(grid, num, array);
 
     int opt;
@@ -205,6 +207,7 @@ int main(int argc, char* argv[]) {
         printf("El terminal no soporta colores.\n");
         return 1;
     }
+
     curs_set(0);
     init_pair(1, COLOR_RED, COLOR_BLACK);
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
