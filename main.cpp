@@ -62,7 +62,6 @@ void swap_grid(string**& grid, int num, int lt, int gt) {
 }
 
 void print_grid(string**& grid, int num, int curr, int mv) {
-    /* system("clear"); */
 
     for (int i=0;i<num;i++) {
         for (int j=0;j<num;j++){
@@ -105,7 +104,7 @@ void print_grid(string**& grid, int num, int curr, int mv) {
 }
 
 void verify_sort(string **&grid, int num, vector<int> array) {
-    sleep=50;
+    sleep=20;
     for (int i=0;i<array.size()-1;i++){
         if (array[i]>array[i+1]){
             cout<<"Hubo un error en el programa\n";
@@ -226,11 +225,11 @@ int main(int argc, char* argv[]) {
     }
  
     verify_sort(grid, num, array);
-    for (int i=0;i<num;i++)
-        cout<<array[i]<<' ';
     delete_grid(grid, num);
     
     getch();
 
     endwin();
+    for (int i=0;i<num;i++)
+        cout<<array[i]<<' ';
 }
