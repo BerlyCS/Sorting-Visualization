@@ -1,4 +1,3 @@
-#include <array>
 #include <iostream>
 #include <string>
 #include <utility>
@@ -61,6 +60,21 @@ void selection_sort(vector<int>& array, int num){
     }
 }
 
+void merge_sort(vector<int>& array, int num){
+    int e;
+    //no se como hacerlo
+}
+
+void quick_sort(vector<int> &array, int num) {
+    if (num<=1){
+        return;
+    }
+    int middle=num/2;
+
+    while (middle=!0) {
+
+    }
+}
 int main(int argc, char* argv[]) {
     if (argc<2) cout<<"./algo <numero>\n";
     vector<int> a(stoi(argv[1]));
