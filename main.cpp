@@ -105,7 +105,7 @@ void print_grid(string**& grid, int num, int curr, int mv) {
 }
 
 void verify_sort(string **&grid, int num, vector<int> array) {
-    sleep=10;
+    sleep=50;
     for (int i=0;i<array.size()-1;i++){
         if (array[i]>array[i+1]){
             cout<<"Hubo un error en el programa\n";
@@ -229,6 +229,8 @@ int main(int argc, char* argv[]) {
     for (int i=0;i<num;i++)
         cout<<array[i]<<' ';
     delete_grid(grid, num);
+    
+    getch();
 
     endwin();
 }
