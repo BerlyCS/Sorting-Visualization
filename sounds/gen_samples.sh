@@ -2,9 +2,10 @@
 
 set -e
 
-for (( i=0;i<10;i++ ))
+MAX=3000
+STEP=$((($MAX-300)/$1))
+
+for (( i = 0;i < $1; i++ ))
 do
-    sox -n -r 22100 -c 1 "beep$i.wav" synth 0.1 sine $((i*150+400))
+    sox -n -r 22100 -c 1 "$i.wav" synth 0.1 sine $((i*150+300))
 done
-
-

@@ -62,18 +62,22 @@ void selection_sort(vector<int>& array, int num){
 
 void merge_sort(vector<int>& array, int num){
     int e;
-    //no se como hacerlo
-}
-
-void quick_sort(vector<int> &array, int num) {
     if (num<=1){
         return;
     }
     int middle=num/2;
+    vector<int> fh(array.begin(),array.begin()+middle);
+    vector<int> lh(array.begin()+middle,array.end());
+    merge_sort(fh, );
 
-    while (middle=!0) {
+
+    while (middle!=0) {
 
     }
+}
+
+void quick_sort(vector<int> &array, int num) {
+
 }
 int main(int argc, char* argv[]) {
     if (argc<2) cout<<"./algo <numero>\n";
