@@ -157,20 +157,7 @@ void selection_sort(vector<int>& array, int num, char**& grid){
     }
 }
 
-int main(int argc, char* argv[]) {
-
-    setlocale(LC_ALL, "");
-    if (argc < 2) {
-        cout<<"Uso: "<<argv[0]<<" [Cantidad] {sleep}\n";
-        return 1;
-    }
-    int num=stoi(argv[1]);
-
-    if (argc==3)
-        sleep=stoi(argv[2]);
-    else
-        sleep=100;
-
+void load_sounds(int num){
     system(("./sounds/gen_samples.sh "+ to_string(num)).c_str());
 
     buffer=new sf::SoundBuffer[num];
@@ -180,6 +167,23 @@ int main(int argc, char* argv[]) {
         buffer[i].loadFromFile(to_string(i)+".wav");
         sound[i].setBuffer(buffer[i]);
     }
+
+}
+
+int main(int argc, char* argv[]) {
+
+    setlocale(LC_ALL, "");
+    if (argc < 2) {
+        cout<<"Uso: "<<argv[0]<<" [Cantidad] {sleep=100ms}\n";
+        return 1;
+    }
+    int num=stoi(argv[1]);
+
+    if (argc==3)
+        sleep=stoi(argv[2]);
+    else
+        sleep=100;
+
 
     vector<int> array(num);
     shuffle_vector(array);

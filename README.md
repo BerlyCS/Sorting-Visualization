@@ -1,8 +1,8 @@
-**SORTING VISUALIZATION
+*SORTING VISUALIZATION
 
 **INSTALACION
 
-El programa requiere SFML y ncurses
+El programa requiere tener instalado SFML, ncurses y sox
 
 Clonar el repositorio
 '''
