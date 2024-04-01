@@ -61,14 +61,16 @@ void selection_sort(vector<int>& array, int num){
 }
 
 void merge_sort(vector<int>& array, int num){
-    int e;
+    //Compute the max index of the halves
+    int fhli,shfi;
     if (num<=1){
         return;
     }
-    int middle=num/2;
-    vector<int> fh(array.begin(),array.begin()+middle);
-    vector<int> lh(array.begin()+middle,array.end());
-    merge_sort(fh, );
+    fhli=num/2;
+    lhfi=fhli+1;
+    vector<int> fh(array.begin(),array.begin()+fhli);
+    vector<int> lh(array.begin()+lhfi,array.end());
+    merge
 
 
     while (middle!=0) {
@@ -77,6 +79,7 @@ void merge_sort(vector<int>& array, int num){
 }
 
 void quick_sort(vector<int> &array, int num) {
+    int pivot=array.size()/2;
 
 }
 int main(int argc, char* argv[]) {
