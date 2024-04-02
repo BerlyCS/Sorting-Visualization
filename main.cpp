@@ -172,7 +172,6 @@ void load_sounds(int num){
 
 int main(int argc, char* argv[]) {
 
-    setlocale(LC_ALL, "");
     if (argc < 2) {
         cout<<"Uso: "<<argv[0]<<" [Cantidad] {sleep=100ms}\n";
         return 1;
@@ -183,6 +182,8 @@ int main(int argc, char* argv[]) {
         sleep=stoi(argv[2]);
     else
         sleep=100;
+
+    load_sounds(num);
 
 
     vector<int> array(num);
