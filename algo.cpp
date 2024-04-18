@@ -60,9 +60,18 @@ void selection_sort(vector<int>& array, int num){
     }
 }
 
+vector<int> merge(vector<int> first_half, vector<int> sec_half) {
+    vector<int> merged(first_half.size()+sec_half.size());
+
+    while (true) {
+        h;
+    }
+    return merged;
+
+}
 void merge_sort(vector<int>& array, int num){
     //Compute the max index of the halves
-    int fhli,shfi;
+    int fhli,lhfi;
     if (num<=1){
         return;
     }
@@ -70,7 +79,6 @@ void merge_sort(vector<int>& array, int num){
     lhfi=fhli+1;
     vector<int> fh(array.begin(),array.begin()+fhli);
     vector<int> lh(array.begin()+lhfi,array.end());
-    merge
 
 
     while (middle!=0) {
@@ -82,6 +90,11 @@ void quick_sort(vector<int> &array, int num) {
     int pivot=array.size()/2;
 
 }
+
+void binary_sort(vector<int> &array, int num) {
+
+}
+
 int main(int argc, char* argv[]) {
     if (argc<2) cout<<"./algo <numero>\n";
     vector<int> a(stoi(argv[1]));
