@@ -1,6 +1,6 @@
-*SORTING VISUALIZATION
+**SORTING VISUALIZATION
 
-##INSTALACION
+**INSTALACION
 
 El programa requiere tener instalado SFML, ncurses y sox
 
@@ -11,7 +11,7 @@ git clone https://github.com/BerlyCS/Sorting-Visualization.git
 
 Ejecutar 'make'
 
-##EJECUCION
+**EJECUCION
 
 '''
 ./main.out [cantidad] [delay]
