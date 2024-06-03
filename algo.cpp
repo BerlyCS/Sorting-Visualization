@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <utility>
 #include <vector>
 
 using namespace std;
@@ -60,29 +59,59 @@ void selection_sort(vector<int>& array, int num){
     }
 }
 
-vector<int> merge(vector<int> first_half, vector<int> sec_half) {
-    vector<int> merged(first_half.size()+sec_half.size());
+void merge(vector<int>& arr, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
 
-    while (true) {
-        h;
+    // Create temporary arrays
+    std::vector<int> L(n1);
+    std::vector<int> R(n2);
+
+    // Copy data to temporary arrays L[] and R[]
+    for (int i = 0; i < n1; ++i)
+        L[i] = arr[left + i];
+    for (int j = 0; j < n2; ++j)
+        R[j] = arr[mid + 1 + j];
+
+    // Merge the temporary arrays back into arr[left..right]
+    int i = 0; // Initial index of first subarray
+    int j = 0; // Initial index of second subarray
+    int k = left; // Initial index of merged subarray
+
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            ++i;
+        } else {
+            arr[k] = R[j];
+            ++j;
+        }
+        ++k;
     }
-    return merged;
 
+    // Copy the remaining elements of L[], if there are any
+    while (i < n1) {
+        arr[k] = L[i];
+        ++i;
+        ++k;
+    }
+
+    // Copy the remaining elements of R[], if there are any
+    while (j < n2) {
+        arr[k] = R[j];
+        ++j;
+        ++k;
+    }
 }
-void merge_sort(vector<int>& array, int num){
-    //Compute the max index of the halves
-    int fhli,lhfi;
-    if (num<=1){
-        return;
-    }
-    fhli=num/2;
-    lhfi=fhli+1;
-    vector<int> fh(array.begin(),array.begin()+fhli);
-    vector<int> lh(array.begin()+lhfi,array.end());
+void merge_sort(vector<int>& array, int izq, int der){
 
+    if ( izq < der ) {
+        int mid = (izq + ( der - izq ))/2;
+        merge_sort(array, izq, mid);
+        merge_sort(array, mid+1, der);
+        print_vect(array);
 
-    while (middle!=0) {
-
+        merge(array, izq, mid, der);
     }
 }
 
@@ -99,7 +128,8 @@ int main(int argc, char* argv[]) {
     if (argc<2) cout<<"./algo <numero>\n";
     vector<int> a(stoi(argv[1]));
     shuffle_vector(a);
-    selection_sort(a, a.size());
+    /* selection_sort(a, a.size()); */
+    merge_sort(a, 0, a.size()-1);
 
    // insert_sort(a, a.size());
     return 0;
