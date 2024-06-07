@@ -64,8 +64,8 @@ void merge(vector<int>& arr, int left, int mid, int right) {
     int n2 = right - mid;
 
     // Create temporary arrays
-    std::vector<int> L(n1);
-    std::vector<int> R(n2);
+    vector<int> L(n1);
+    vector<int> R(n2);
 
     // Copy data to temporary arrays L[] and R[]
     for (int i = 0; i < n1; ++i)
@@ -103,16 +103,16 @@ void merge(vector<int>& arr, int left, int mid, int right) {
         ++k;
     }
 }
-void merge_sort(vector<int>& array, int izq, int der){
 
-    if ( izq < der ) {
-        int mid = (izq + ( der - izq ))/2;
+void merge_sort(vector<int>& array, int izq, int der) {
+    if (izq < der) {
+        int mid = izq + (der - izq) / 2;
         merge_sort(array, izq, mid);
-        merge_sort(array, mid+1, der);
-        print_vect(array);
+        merge_sort(array, mid + 1, der);
 
         merge(array, izq, mid, der);
     }
+    print_vect(array); // Ensure this function is correct
 }
 
 void quick_sort(vector<int> &array, int num) {

@@ -157,6 +157,68 @@ void selection_sort(vector<int>& array, int num, char**& grid){
     }
 }
 
+void merge(vector<int>& arr, int left, int mid, int right, char**& grid) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    // Create temporary arrays
+    vector<int> L(n1);
+    vector<int> R(n2);
+
+    // Copy data to temporary arrays L[] and R[]
+    for (int i = 0; i < n1; ++i)
+        L[i] = arr[left + i];
+    for (int j = 0; j < n2; ++j)
+        R[j] = arr[mid + 1 + j];
+
+    // Merge the temporary arrays back into arr[left..right]
+    int i = 0; // Initial index of first subarray
+    int j = 0; // Initial index of second subarray
+    int k = left; // Initial index of merged subarray
+
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            swap_grid(grid, arr.size(), k,i);
+            ++i;
+        } else {
+            arr[k] = R[j];
+            swap_grid(grid, arr.size(), k,j);
+            ++j;
+        }
+        ++k;
+        print_grid(grid, arr.size(), 0,0);
+    }
+
+    while (i < n1) {
+        arr[k] = L[i];
+        swap_grid(grid, arr.size(), k,i);
+        ++i;
+        ++k;
+        print_grid(grid, arr.size(), 0,0);
+    }
+
+    while (j < n2) {
+        arr[k] = R[j];
+        swap_grid(grid, arr.size(), k, j);
+        ++j;
+        ++k;
+        print_grid(grid, arr.size(), 0,0);
+
+    }
+    
+}
+
+void merge_sort(vector<int>& array, int izq, int der, char**& grid) {
+    if (izq < der) {
+        int mid = izq + (der - izq) / 2;
+        merge_sort(array, izq, mid, grid);
+        merge_sort(array, mid + 1, der, grid);
+
+        merge(array, izq, mid, der, grid);
+    }
+}
+
 void load_sounds(int num){
     system(("./sounds/gen_samples.sh "+ to_string(num)).c_str());
 
@@ -193,13 +255,15 @@ int main(int argc, char* argv[]) {
     cout<<"Selecciona algoritmo:\n"
         <<"1.Bubble Sort \n"
         <<"2.Insert Sort \n"
-        <<"3.Selection Sort \n";
+        <<"3.Selection Sort \n"
+        <<"4.Merge Sort \n";
     cin>>opt;
     
     initscr();
     cbreak();
     noecho();
     start_color();
+
     if (!has_colors()) {
         endwin();
         printf("El terminal no soporta colores.\n");
@@ -223,6 +287,9 @@ int main(int argc, char* argv[]) {
             break;
         case 3:
             selection_sort(array, num, grid);
+            break;
+        case 4:
+            merge_sort(array, 0, num-1, grid);
             break;
         default:
             delete_grid(grid, num);
