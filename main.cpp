@@ -13,8 +13,6 @@
 #include <vector>
 #include <SFML/Audio.hpp>
 #include <ncurses.h>
-#include <ncursesw/ncurses.h>
-#include <ncurses/menu.h>
 
 using namespace std;
 
