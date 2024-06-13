@@ -89,7 +89,6 @@ void print_grid(char**& grid, int num, int curr, int mv) {
     sound[curr].play();
     
     this_thread::sleep_for(chrono::milliseconds(sleep));
-    /* system(("sleep "+to_string(sleep)).c_str()); */
 }
 
 void verify_sort(char **&grid, int num, vector<int> array) {
