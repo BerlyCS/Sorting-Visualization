@@ -1,18 +1,31 @@
-**SORTING VISUALIZATION
+# Sorting Visualization
 
-**INSTALACION
+> **UPDATE:** Working on a new system for the supporting of more complex sorting algorithms
 
-El programa requiere tener instalado SFML, ncurses y sox
+A program that uses a command line interface to show various sorting algorithms using sound.
 
-Clonar el repositorio
-'''
-git clone https://github.com/BerlyCS/Sorting-Visualization.git
-'''
+## Compiling from source
 
-Ejecutar 'make'
 
-**EJECUCION
+~~~
+sudo apt install sox libncurses-dev libsfml-dev
+~~~
 
-'''
-./main.out [cantidad] [delay]
-'''
+~~~
+make
+~~~
+
+## Execution
+
+In a terminal the execution without any arguments will give the help menu.
+
+~~~
+./main.out [Quantity] [Time]
+~~~
+
+- __Quantity__ refers to the size of the array and the grid.
+- __Time__ refers to the time (in milliseconds) by default is 100ms.
+
+
+
+
