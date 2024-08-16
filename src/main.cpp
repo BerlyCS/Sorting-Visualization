@@ -6,7 +6,7 @@
 //Base class that will work as an array
 class SortArray {
     private:
-        int *vector;
+        int *vector, select;
         char **grid;
         int size, delay;
         bool ncurses_scr;
@@ -49,6 +49,7 @@ SortArray::SortArray(int size, int delay, bool scr = true) : size(size), delay(d
         }
 
         curs_set(0);
+        init_pair(0, COLOR_WHITE, COLOR_BLACK);
         init_pair(1, COLOR_WHITE, COLOR_WHITE);
         init_pair(2, COLOR_RED, COLOR_RED);
         init_pair(3, COLOR_GREEN, COLOR_GREEN);
@@ -83,6 +84,15 @@ SortArray::SortArray(int size, int delay, bool scr = true) : size(size), delay(d
         }
     }
 
+    select=-1 ;
+
+    //Help menu about color
+    attron(COLOR_PAIR(0));
+    mvaddstr(1, size+4, ": Swap.");
+    mvaddstr(3, size+2, ": Swap ignored, omitted.");
+    mvaddstr(5, size+4, ": Acess to the array for comparison");
+    mvaddstr(7, size+2, ": Array value modified, setted");
+    /* attroff(COLOR_PAIR(1)); */
 }
 
 SortArray::~SortArray() {
@@ -158,8 +168,13 @@ void SortArray::ignore(int a, int b) {
 }
 
 int& SortArray::operator[](int n) {
-    if (ncurses_scr)
+    if (select == -1) {
         update(n, 4);
+        select = n;
+    } else {
+        update(select, n, 4,6);
+        select=-1;
+    }
 
     return vector[n];
 }
@@ -275,6 +290,6 @@ void Selection_Sort(int n, int d) {
 
 int main() {
     Insertion_Sort(5, 500);
-    BubbleSort(10, 500);
+    BubbleSort(10, 100);
     /* Selection_Sort(5, 500); */
 }
