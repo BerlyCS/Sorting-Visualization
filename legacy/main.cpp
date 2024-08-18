@@ -27,7 +27,7 @@ using namespace std;
 
 sf::SoundBuffer *buffer;
 sf::Sound *sound;
-int sleep;
+int _sleep;
 
 void create_grid(char **&grid, int num, vector<int> array){
     grid = new char*[num];
@@ -88,11 +88,11 @@ void print_grid(char**& grid, int num, int curr, int mv) {
     
     sound[curr].play();
     
-    this_thread::sleep_for(chrono::milliseconds(sleep));
+    this_thread::sleep_for(chrono::milliseconds(_sleep));
 }
 
 void verify_sort(char **&grid, int num, vector<int> array) {
-    sleep=20;
+    _sleep=20;
     for (size_t i=0;i<array.size()-1;i++){
         if (array[i]>array[i+1]){
             cout<<"Hubo un error en el programa\n";
@@ -238,9 +238,9 @@ int main(int argc, char* argv[]) {
     int num=stoi(argv[1]);
 
     if (argc==3)
-        sleep=stoi(argv[2]);
+        _sleep=stoi(argv[2]);
     else
-        sleep=100;
+        _sleep=100;
 
     load_sounds(num);
 
