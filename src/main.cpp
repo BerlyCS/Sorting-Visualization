@@ -1,32 +1,149 @@
 #include <cstdio>
+#include <cstring>
+#include <iostream>
 #include <ncurses.h>
 #include "algo.h"
+#include <ctype.h>
+#include <string>
+
+#define RESET   "\033[0m"
+#define RED     "\033[31m"
+#define GREEN   "\033[32m"
+#define YELLOW  "\033[33m"
+#define BLUE    "\033[34m"
+#define MAGENTA "\033[35m"
+#define CYAN    "\033[36m"
+
 void help(){
     printf("%s\n", "Usage:");
-    printf("%s\n", "./main [options] [Size] [Delay]");
+    printf("%s\n", "./main [options] [Algorithm] [Size] [Delay]");
     printf("\t%-6s %s\n","-a", "Toggle access color. Default off");
     printf("\t%-6s %s\n","-s", "Toggle swap color.");
     printf("\t%-6s %s\n","-y", "Toggle ignore color.");
+    printf("\t%-6s %s\n","-c", "Toggle all color. Colorless");
+    printf("\t%-6s %s\n","-h", "Show this help");
+    printf("\t%-6s %s\n","Algorithm", "The sorting algorithm. Default: 1. See below.");
     printf("\t%-6s %s\n","Size", "The size of the array. Default: 10");
     printf("\t%-6s %s\n\n","Delay", "The Delay in ms between each step. Default 100");
     printf("\t%-6s\n\t%s\n","Example", "./main -t 5 500");
 
 }
 
-void verify(char* arg){
-    char ptr = *arg;
-    while (ptr!= ) {
-
+bool valid_number(char* arg) {
+    if (arg[0] == '\0') {
+        return false;
     }
+
+    for (int i=0; arg[i] != '\0'; i++) {
+        if (!isdigit(arg[i])) {
+            return false;
+        }
+    }
+    
+    return true;
+}
+bool valid_arg(char* arg) {
+    if (arg[0] != '-') {
+        return false;
+    }
+
+    for (int i = 1; arg[i] != '\0'; i++) {  // Iterate over each character starting from the second
+        if (arg[i] == 'c' || arg[i] == 'y' || arg[i] == 's' || arg[i] == 'h' || arg[i] == 'a') {
+            continue;
+        } else {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool parse_args(int argc, char** argv, int* options) {
+    //Options 
+    //options[0] -> Algorithm   Default 1
+    //options[1] -> Size        Default 10
+    //options[2] -> Delay       Default 100
+    //options[3] -> -a
+    //options[4] -> -s
+    //options[5] -> -y
+    //options[3,4,5] -> -c
+
+    int filled = 0;
+
+    for (int i=1; i<argc; i++) {
+        if ( valid_number(argv[i]) ) {
+            options[filled++] = std::stoi(argv[i]);
+        }
+        else if ( valid_arg(argv[i]) ) {
+            for (char* c=argv[i] +1; *c!= '\0'; c++) {
+                if (*c == 'h') {
+                    help();
+                    return false;
+                }
+                else if (*c=='c') {
+                    options[3] = 1;
+                    options[4] = 1;
+                    options[5] = 1;
+                }
+                else if (*c=='a') 
+                    options[3] =1;
+                
+                else if (*c=='s')
+                    options[4] =1;
+
+                else if (*c=='y')
+                    options[5] =1;
+
+                else {
+                    printf("The option %c does not exist.\n", *c);
+                }
+                
+            }
+        }
+        else {
+            printf("Invalid option: %s.\nSee ./main -h for help", argv[i]);
+            return false;
+        }
+    }
+    if (filled < 3) {
+        options[2] = 100;
+    } 
+    if ( filled < 2) {
+        options[1] = 10;
+    }
+    if ( filled < 1 ) {
+        options[0] = 1;
+    }
+
+    return true;
 }
 
 int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        help();
-        return 0;
+    /* if (argc < 2) { */
+    /*     help(); */
+    /*     return 0; */
+    /* } */
+
+    int options[6];
+    bool opts=parse_args(argc, argv, options);
+
+    if (!opts) {
+        return 1;
     }
 
-    Insertion_Sort(5, 500);
-    BubbleSort(10, 100);
+    switch (options[0]) {
+        case 1:
+            BubbleSort(options[1], options[2]);
+            break;
+        case 2:
+            Insertion_Sort(options[1], options[2]);
+            break;
+        default:
+            printf("Invalid algorithm number.");
+    }
+
+    /* Insertion_Sort(6, 500); */
+    /* BubbleSort(10, 100); */
     /* Selection_Sort(5, 500); */
+
+    return 0;
 }
