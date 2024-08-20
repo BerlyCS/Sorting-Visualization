@@ -15,17 +15,21 @@
 #define CYAN    "\033[36m"
 
 void help(){
-    printf("%s\n", "Usage:");
+    printf("%s ", "Usage:");
     printf("%s\n", "./main [options] [Algorithm] [Size] [Delay]");
-    printf("\t%-6s %s\n","-a", "Toggle access color. Default off");
-    printf("\t%-6s %s\n","-s", "Toggle swap color.");
-    printf("\t%-6s %s\n","-y", "Toggle ignore color.");
-    printf("\t%-6s %s\n","-c", "Toggle all color. Colorless");
-    printf("\t%-6s %s\n","-h", "Show this help");
-    printf("\t%-6s %s\n","Algorithm", "The sorting algorithm. Default: 1. See below.");
-    printf("\t%-6s %s\n","Size", "The size of the array. Default: 10");
-    printf("\t%-6s %s\n\n","Delay", "The Delay in ms between each step. Default 100");
-    printf("\t%-6s\n\t%s\n","Example", "./main -t 5 500");
+    printf("\t%-9s %s\n","-a", "Toggle access color. Default off");
+    printf("\t%-9s %s\n","-s", "Toggle swap color.");
+    printf("\t%-9s %s\n","-y", "Toggle ignore color.");
+    printf("\t%-9s %s\n","-c", "Toggle all color. Colorless");
+    printf("\t%-9s %s\n","-h", "Show this help");
+    printf("\t%-9s %s\n","Algorithm", "The sorting algorithm. Default: 1. See below.");
+    printf("\t%-9s %s\n","Size", "The size of the array. Default: 10");
+    printf("\t%-9s %s\n\n","Delay", "The Delay in ms between each step. Default 100");
+    printf("\t%-9s\n\t%s\n","Example", "./main -t 5 500");
+    printf("\n%s\n","Algorithms:");
+    printf("\t%s\n","1. BubbleSort");
+    printf("\t%s\n","2. InsertSort");
+
 
 }
 
@@ -58,7 +62,6 @@ bool valid_arg(char* arg) {
 }
 
 bool parse_args(int argc, char** argv, int* options) {
-    //Options 
     //options[0] -> Algorithm   Default 1
     //options[1] -> Size        Default 10
     //options[2] -> Delay       Default 100
@@ -118,11 +121,6 @@ bool parse_args(int argc, char** argv, int* options) {
 }
 
 int main(int argc, char* argv[]) {
-    /* if (argc < 2) { */
-    /*     help(); */
-    /*     return 0; */
-    /* } */
-
     int options[6];
     bool opts=parse_args(argc, argv, options);
 
@@ -140,10 +138,5 @@ int main(int argc, char* argv[]) {
         default:
             printf("Invalid algorithm number.");
     }
-
-    /* Insertion_Sort(6, 500); */
-    /* BubbleSort(10, 100); */
-    /* Selection_Sort(5, 500); */
-
     return 0;
 }

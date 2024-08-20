@@ -1,5 +1,6 @@
 #ifndef SORT_ARRAY_H
 #define SORT_ARRAY_H  
+#include <string>
 #pragma once
 
 /* Base class that will work as an array */
@@ -9,9 +10,10 @@ class SortArray {
         char **grid;
         int size, delay;
         bool ncurses_scr;
+        int comp, acc, swp;
         
     public:
-        SortArray(int, int, bool=true); 
+        SortArray(int, int, std::string,bool=true); 
         ~SortArray();
 
         //debug
@@ -27,8 +29,12 @@ class SortArray {
         int& operator[](int);
 
         //ncurses screen updaters (?)
-        void update(int a, int b, int,int);
-        void update(int a, int);
+        void update(int, int, int, int);
+        void update(int, int);
+        void write(std::string);
+        void update_access();
+        void update_comparison();
+        void update_swap();
 };
 
 #endif

@@ -1,10 +1,11 @@
 #include <ncurses.h>
 #include <iostream>
+#include <string>
 #include <thread>
 #include "sort_array.h"
 
 
-SortArray::SortArray(int size, int delay, bool scr) : size(size), delay(delay), ncurses_scr(scr) {
+SortArray::SortArray(int size, int delay, std::string sort_name, bool scr) : size(size), delay(delay), ncurses_scr(scr) {
 
     if (scr) {
         initscr();
@@ -17,7 +18,7 @@ SortArray::SortArray(int size, int delay, bool scr) : size(size), delay(delay), 
         }
 
         curs_set(0);
-        init_pair(0, COLOR_WHITE, COLOR_BLACK);
+        init_pair(9, COLOR_WHITE, COLOR_BLACK);
         init_pair(1, COLOR_WHITE, COLOR_WHITE);
         init_pair(2, COLOR_RED, COLOR_RED);
         init_pair(3, COLOR_GREEN, COLOR_GREEN);
@@ -52,15 +53,15 @@ SortArray::SortArray(int size, int delay, bool scr) : size(size), delay(delay), 
         }
     }
 
-    select=-1 ;
+    select=-1; //Notifies if a 
+    comp = 0; //Comparisons counter
+    acc = 0; //Accesses counter
+    swp = 0; //Swap counter
+    write(sort_name);
 
-    //Help menu about color
-    attron(COLOR_PAIR(0));
-    mvaddstr(1, size+4, ": Swap.");
-    mvaddstr(3, size+2, ": Swap ignored, omitted.");
-    mvaddstr(5, size+4, ": Acess to the array for comparison");
-    mvaddstr(7, size+2, ": Array value modified, setted");
-    /* attroff(COLOR_PAIR(1)); */
+    mvprintw(3, size+1, "Accesses: %d", acc);
+    mvprintw(7, size+1, "Swap: %d", swp);
+    mvprintw(5, size+1, "Comparisons: %d", comp);
 }
 
 SortArray::~SortArray() {
@@ -104,6 +105,7 @@ void SortArray::swapv(int a, int b) {
         std::swap(grid[i][a], grid[i][b]);
     }
 
+    update_swap();
     update(a,b,2,3);
     return;
 }
@@ -119,6 +121,7 @@ void SortArray::set(int pos, int val) {
    for (int i=0; i<size; i++) {
         grid[i][pos] = val;
     }
+   update_access();
 
    update(pos, 4);
 
@@ -136,8 +139,11 @@ void SortArray::ignore(int a, int b) {
 }
 
 int& SortArray::operator[](int n) {
+    update_access();
     if (select == -1) {
-        update(n, 4);
+        //set to false to skip first value selection
+        if (true) 
+            update(n, 4);
         select = n;
     } else {
         update(select, n, 4,6);
@@ -207,4 +213,29 @@ void SortArray::update(int a, int color) {
     
     
     std::this_thread::sleep_for(std::chrono::milliseconds(delay));
+}
+
+void SortArray::write(std::string sort_name) {
+    mvaddstr(1, size+1, sort_name.c_str());
+}
+
+void SortArray::update_access() {
+    acc++;
+    attron(COLOR_PAIR(9));
+    mvprintw(3, size+1, "Accesses: %d", acc);
+    attroff(0);
+}
+
+void SortArray::update_comparison() {
+    comp++;
+    attron(COLOR_PAIR(9));
+    mvprintw(5, size+1, "Comparisons: %d", comp);
+    attroff(0);
+}
+
+void SortArray::update_swap() {
+    swp++;
+    attron(COLOR_PAIR(9));
+    mvprintw(7, size+1, "Swap: %d", swp);
+    attroff(0);
 }
