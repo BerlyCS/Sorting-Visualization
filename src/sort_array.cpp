@@ -55,7 +55,8 @@ SortArray::SortArray(int* args, std::string sort_name, bool scr) : ncurses_scr(s
         }
     }
 
-    select=-1; //Notifies if a 
+    select=-1; //Notifies if a value has been accessed
+               //for comparison
     comp = 0; //Comparisons counter
     acc = 0; //Accesses counter
     swp = 0; //Swap counter
@@ -73,7 +74,7 @@ SortArray::SortArray(int* args, std::string sort_name, bool scr) : ncurses_scr(s
 SortArray::~SortArray() {
     getch();
     endwin();
-    print_all();
+    /* print_all(); */
     for (int i=0; i<size; i++) {
         delete[] grid[i];
     }
