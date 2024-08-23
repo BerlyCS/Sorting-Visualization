@@ -5,8 +5,10 @@
 #include "sort_array.h"
 
 
-SortArray::SortArray(int size, int delay, std::string sort_name, bool scr) : size(size), delay(delay), ncurses_scr(scr) {
+SortArray::SortArray(int* args, std::string sort_name, bool scr) : ncurses_scr(scr) {
 
+    size = args[1];
+    delay = args[2];
     if (scr) {
         initscr();
         cbreak();
@@ -62,9 +64,14 @@ SortArray::SortArray(int size, int delay, std::string sort_name, bool scr) : siz
     mvprintw(3, size+1, "Accesses: %d", acc);
     mvprintw(7, size+1, "Swap: %d", swp);
     mvprintw(5, size+1, "Comparisons: %d", comp);
+
+    ACC_C = args[3];
+    SWP_C = args[4];
+    IGN_C = args[5];
 }
 
 SortArray::~SortArray() {
+    getch();
     endwin();
     print_all();
     for (int i=0; i<size; i++) {
@@ -96,6 +103,7 @@ void SortArray::print_all() const {
 }
 
 void SortArray::swapv(int a, int b) {
+    update_comparison();
     if (b>= size || a>= size) {
         std::cout<<"\nSwap Limit Exceeded. Aborting"<<std::endl;
         return;
@@ -106,7 +114,9 @@ void SortArray::swapv(int a, int b) {
     }
 
     update_swap();
-    update(a,b,2,3);
+    
+    update(a,b,2,3,SWP_C);
+
     return;
 }
 
@@ -118,12 +128,13 @@ void SortArray::set(int pos, int val) {
 
     vector[pos] = val;
 
-   for (int i=0; i<size; i++) {
+    for (int i=0; i<size; i++) {
         grid[i][pos] = val;
     }
-   update_access();
+    update_access();
 
-   update(pos, 4);
+    //forgot to add a flag for this :p
+    update(pos, 4);
 
     return;
 }
@@ -131,45 +142,48 @@ void SortArray::set(int pos, int val) {
 //Not really necesary for the sorting but can give 
 //a better idea when a swap is omitted
 void SortArray::ignore(int a, int b) {
+    update_comparison();
     if (a>=size || b>= size) {
         std::cout<<"Ignore Limit Exceeded. Aborting\n";
     }
 
-    update(a,b,5,5);
+    if (!IGN_C)
+        update(a,b,5,5);
 }
 
 int& SortArray::operator[](int n) {
     update_access();
-    if (select == -1) {
-        //set to false to skip first value selection
-        if (true) 
+
+    if (!ACC_C) {
+        if (select == -1) {
+            //set to false to skip first value selection
             update(n, 4);
-        select = n;
-    } else {
-        update(select, n, 4,6);
-        select=-1;
+            select = n;
+        } else {
+            update(select, n, 4,6);
+            select=-1;
+        }
     }
 
     return vector[n];
 }
 
 // for swap and ignore update
-void SortArray::update(int a, int b, int color_a, int color_b) {
+void SortArray::update(int a, int b, int color_a, int color_b, bool flag) {
     for (int i=0;i<size;i++) {
         for (int j=0;j<size;j++){
             if (grid[i][j] == ' ') {
-
                 attron(COLOR_PAIR(8));
                 mvaddch(i, j, ' ');
                 attroff(0);
                 continue;
             }
-            if (j == a){
+            if (j == a && !flag){
                 attron(COLOR_PAIR(color_a));
                 mvaddch(i, j, ' ');
                 attroff(0);
             } 
-            else if ( j==b ) {
+            else if ( j==b && !flag) {
                 attron(COLOR_PAIR(color_b));
                 mvaddch(i, j, ' ');
                 attroff(0);

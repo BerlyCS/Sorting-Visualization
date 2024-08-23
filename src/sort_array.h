@@ -9,11 +9,11 @@ class SortArray {
         int *vector, select;
         char **grid;
         int size, delay;
-        bool ncurses_scr;
+        bool ncurses_scr,SWP_C,IGN_C,ACC_C;
         int comp, acc, swp;
         
     public:
-        SortArray(int, int, std::string,bool=true); 
+        SortArray(int*, std::string,bool=true); 
         ~SortArray();
 
         //debug
@@ -29,7 +29,7 @@ class SortArray {
         int& operator[](int);
 
         //ncurses screen updaters (?)
-        void update(int, int, int, int);
+        void update(int, int, int, int, bool=false);
         void update(int, int);
         void write(std::string);
         void update_access();

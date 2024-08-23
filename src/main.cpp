@@ -1,6 +1,5 @@
 #include <cstdio>
 #include <cstring>
-#include <iostream>
 #include <ncurses.h>
 #include "algo.h"
 #include <ctype.h>
@@ -121,7 +120,7 @@ bool parse_args(int argc, char** argv, int* options) {
 }
 
 int main(int argc, char* argv[]) {
-    int options[6];
+    int options[6]={0,0,0,0,0,0};
     bool opts=parse_args(argc, argv, options);
 
     if (!opts) {
@@ -130,10 +129,13 @@ int main(int argc, char* argv[]) {
 
     switch (options[0]) {
         case 1:
-            BubbleSort(options[1], options[2]);
+            BubbleSort(options);
             break;
         case 2:
-            Insertion_Sort(options[1], options[2]);
+            Insertion_Sort(options);
+            break;
+        case 3:
+            Selection_Sort(options);
             break;
         default:
             printf("Invalid algorithm number.");
