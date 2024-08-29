@@ -1,4 +1,5 @@
 #include "sort_array.h"
+#include <cstdlib>
 
 void BubbleSort(int* args) {
     int n = args[1];
@@ -50,8 +51,28 @@ void Selection_Sort(int* args) {
     }
 }
 
-//to work on
-void Quick_Sort();
+void BogoSort(int* args) {
+    int n=args[1];
+    SortArray a(args, "BogoSort");
 
-void Merge_sort();
+    auto sorted = [&](SortArray& a, int n) {
+        for (int i=0; i<n-1; i++) {
+            a.update_comparison();
+            if (a[i] > a[i+1]) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    while (true) {
+        a.swapv(rand()%n, rand()%n,false);
+        if (sorted(a,n)) break;
+    }
+}
+
+//to work on
+void Quick_Sort(int*);
+
+void Merge_sort(int*);
 

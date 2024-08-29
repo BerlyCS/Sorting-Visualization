@@ -103,8 +103,10 @@ void SortArray::print_all() const {
     this->print_vect();
 }
 
-void SortArray::swapv(int a, int b) {
-    update_comparison();
+void SortArray::swapv(int a, int b, bool comparison) {
+    if (comparison)
+        update_comparison();
+
     if (b>= size || a>= size) {
         std::cout<<"\nSwap Limit Exceeded. Aborting"<<std::endl;
         return;

@@ -22,7 +22,7 @@ class SortArray {
         void print_all() const;
 
         //Used by algorithms
-        void swapv(int, int);
+        void swapv(int, int, bool=true);
         void set(int, int);
         void ignore(int ,int);
 

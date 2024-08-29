@@ -7,8 +7,10 @@ void Insertion_Sort(int*);
 
 void Selection_Sort(int*);
 
-void Quick_Sort();
+void BogoSort(int*);
 
-void Merge_sort();
+void Quick_Sort(int*);
+
+void Merge_sort(int*);
 
 #endif

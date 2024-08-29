@@ -24,10 +24,11 @@ void help(){
     printf("\t%-9s %s\n","Algorithm", "The sorting algorithm. Default: 1. See below.");
     printf("\t%-9s %s\n","Size", "The size of the array. Default: 10");
     printf("\t%-9s %s\n\n","Delay", "The Delay in ms between each step. Default 100");
-    printf("\t%-9s\n\t%s\n","Example", "./main -t 5 500");
+    printf("\t%-9s\n\t%s\n","Example", "./main -ya 3 15 300");
     printf("\n%s\n","Algorithms:");
     printf("\t%s\n","1. BubbleSort");
     printf("\t%s\n","2. InsertSort");
+    printf("\t%s\n","3. Selection_Sort");
 
 
 }
@@ -136,6 +137,9 @@ int main(int argc, char* argv[]) {
             break;
         case 3:
             Selection_Sort(options);
+            break;
+        case 4:
+            BogoSort(options);
             break;
         default:
             printf("Invalid algorithm number.");
