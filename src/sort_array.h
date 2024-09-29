@@ -1,6 +1,7 @@
 #ifndef SORT_ARRAY_H
 #define SORT_ARRAY_H  
 #include <string>
+#include "beep.h"
 #pragma once
 
 /* Base class that will work as an array */
@@ -11,6 +12,7 @@ class SortArray {
         int size, delay;
         bool ncurses_scr,SWP_C,IGN_C,ACC_C;
         int comp, acc, swp;
+        Beeper sound;
         
     public:
         SortArray(int*, std::string,bool=true); 

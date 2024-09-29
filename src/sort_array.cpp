@@ -1,3 +1,4 @@
+#include <SDL/SDL.h>
 #include <ncurses.h>
 #include <iostream>
 #include <string>
@@ -69,6 +70,7 @@ SortArray::SortArray(int* args, std::string sort_name, bool scr) : ncurses_scr(s
     ACC_C = args[3];
     SWP_C = args[4];
     IGN_C = args[5];
+    
 }
 
 SortArray::~SortArray() {
@@ -200,7 +202,7 @@ void SortArray::update(int a, int b, int color_a, int color_b, bool flag) {
     }
     refresh();
     
-    
+    sound.beep(a*300, delay);
     std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 }
 
