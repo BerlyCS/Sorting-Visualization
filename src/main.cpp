@@ -16,10 +16,10 @@
 void help(){
     printf("%s ", "Usage:");
     printf("%s\n", "./main [options] [Algorithm] [Size] [Delay]");
-    printf("\t%-9s %s\n","-a", "Toggle access color. Default off");
-    printf("\t%-9s %s\n","-s", "Toggle swap color.");
-    printf("\t%-9s %s\n","-y", "Toggle ignore color.");
-    printf("\t%-9s %s\n","-c", "Toggle all color. Colorless");
+    printf("\t%-9s %s\n","-a", "Disable access color. Default off");
+    printf("\t%-9s %s\n","-s", "Disable swap color.");
+    printf("\t%-9s %s\n","-y", "Disable ignore color.");
+    printf("\t%-9s %s\n","-c", "Disable all color. Colorless");
     printf("\t%-9s %s\n","-h", "Show this help");
     printf("\t%-9s %s\n","Algorithm", "The sorting algorithm. Default: 1. See below.");
     printf("\t%-9s %s\n","Size", "The size of the array. Default: 10");
