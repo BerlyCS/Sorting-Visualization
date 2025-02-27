@@ -26,7 +26,7 @@ using namespace std;
 #define CYAN    "\033[36m"
 
 sf::SoundBuffer *buffer;
-sf::Sound *sound;
+vector<sf::Sound> sound;
 int _sleep;
 
 void create_grid(char **&grid, int num, vector<int> array){
@@ -220,11 +220,11 @@ void load_sounds(int num){
     system(("./sounds/gen_samples.sh "+ to_string(num)).c_str());
 
     buffer=new sf::SoundBuffer[num];
-    sound=new sf::Sound[num];
 
     for (int i=0; i<num; i++){
         buffer[i].loadFromFile(to_string(i)+".wav");
-        sound[i].setBuffer(buffer[i]);
+        /* sound[i].setBuffer(buffer[i]); */
+        sound.push_back(sf::Sound(buffer[i]));
     }
 
 }
@@ -292,7 +292,7 @@ int main(int argc, char* argv[]) {
             delete_grid(grid, num);
             endwin();
             
-            delete[] sound;
+            /* delete[] sound; */
             delete[] buffer;
 
             system("rm *.wav");
@@ -306,7 +306,7 @@ int main(int argc, char* argv[]) {
     getch();
 
     endwin();
-    delete[] sound;
+    /* delete[] sound; */
     delete[] buffer;
     for (int i=0;i<num;i++)
         cout<<array[i]<<' ';
