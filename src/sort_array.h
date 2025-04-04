@@ -12,7 +12,7 @@ class SortArray {
         int size, delay;
         bool ncurses_scr,SWP_C,IGN_C,ACC_C;
         int comp, acc, swp;
-        Beeper sound;
+        /* Beeper sound; */
         
     public:
         SortArray(int*, std::string,bool=true); 
@@ -33,7 +33,7 @@ class SortArray {
         //ncurses screen updaters (?)
         void update(int, int, int, int, bool=false);
         void update(int, int);
-        void write(std::string);
+        void write_name(std::string);
         void update_access();
         void update_comparison();
         void update_swap();

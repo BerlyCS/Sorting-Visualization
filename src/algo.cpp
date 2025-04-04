@@ -71,7 +71,7 @@ void BogoSort(int* args) {
     }
 }
 
-//to work on
+//TODO
 void Quick_Sort(int*);
 
 void Merge_sort(int*);

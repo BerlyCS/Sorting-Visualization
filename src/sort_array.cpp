@@ -61,7 +61,7 @@ SortArray::SortArray(int* args, std::string sort_name, bool scr) : ncurses_scr(s
     comp = 0; //Comparisons counter
     acc = 0; //Accesses counter
     swp = 0; //Swap counter
-    write(sort_name);
+    write_name(sort_name);
 
     mvprintw(3, size+1, "Accesses: %d", acc);
     mvprintw(7, size+1, "Swap: %d", swp);
@@ -202,7 +202,7 @@ void SortArray::update(int a, int b, int color_a, int color_b, bool flag) {
     }
     refresh();
     
-    sound.beep(a*300, delay);
+    /* sound.beep(a*300, delay); */
     std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 }
 
@@ -234,7 +234,7 @@ void SortArray::update(int a, int color) {
     std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 }
 
-void SortArray::write(std::string sort_name) {
+void SortArray::write_name(std::string sort_name) {
     mvaddstr(1, size+1, sort_name.c_str());
 }
 
