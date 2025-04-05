@@ -7,11 +7,23 @@
 #include <vector>
 #include <string>
 
+#define WHITE 1
+#define RED 2
+#define GREEN 3
+#define BLUE 4
+#define YELLOW 5
+#define CYAN 6
+#define MAGENTA 7
+#define BLACK 8
+#define NORMAL 9
+
 class renderer {
   private:
     size_t _mat_size;
     std::stack<std::pair<int, int>> _colored_cols;
     std::string _algorithm_name;
+
+    void _color_col(int pos,int val, short color);
     
   public:
     renderer();

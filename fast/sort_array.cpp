@@ -34,13 +34,28 @@ void sort_array::swap(int pos1, int pos2) {
   std::swap(arr[pos1], arr[pos2]);
 
   count_swap();
-  std::this_thread::sleep_for(std::chrono::milliseconds(100));
   render.update_count(acc, swp, comp, recur);
+  render.cli_refresh_screen();
+  std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+
+void sort_array::ignore(int pos1, int pos2) {
+  render.reset_color();
+  render.color_col(pos1, this->arr[pos1], YELLOW);
+  render.color_col(pos2, this->arr[pos2], YELLOW);
+  count_comparison();
+
+  render.cli_refresh_screen();
+  std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 int& sort_array::operator[](size_t index) {
   count_access();
+  render.reset_color();
+  render.color_col(index, arr[index], CYAN);
   render.update_count(acc, swp, comp, recur);
+  render.cli_refresh_screen();
+  std::this_thread::sleep_for(std::chrono::milliseconds(100));
   return arr[index];
 }
 

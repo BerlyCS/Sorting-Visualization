@@ -5,11 +5,7 @@
 #include <utility>
 #include <vector>
 
-#define BLUE 4
-#define GREEN 3
-#define RED 2
-#define BLACK 8
-#define NORMAL 9
+
 
 renderer::renderer() {
 }
@@ -55,8 +51,7 @@ void renderer::cli_init_screen(std::vector<int>& arr) {
       attroff(0);
     }
   }
-  refresh();
-
+  cli_refresh_screen();
 }
 void renderer::swap_cols(int pos1, int pos2, std::vector<int> &v) {
 
@@ -81,7 +76,6 @@ void renderer::swap_cols(int pos1, int pos2, std::vector<int> &v) {
     mvaddch(i, pos1, ' ');
     attroff(COLOR_PAIR(NORMAL));
   }
-  refresh();
 }
 
 
@@ -92,23 +86,58 @@ renderer::~renderer() {
 
 
 void renderer::color_col(int pos, int value, short color) {
+  _colored_cols.push({pos, value});
+  for (size_t i=0;i<_mat_size; i++) {
+    if (value +1< _mat_size-i) {
+      attron(COLOR_PAIR(BLACK));
+    }
+    else {
+      attron(COLOR_PAIR(color));
+    }
+    mvaddch(i, pos, ' ');
+    attroff(COLOR_PAIR(NORMAL));
+  }
 }
 
 void renderer::reset_color() {
-
+  std::pair<int, int> col_pos;
+  while (!_colored_cols.empty()) {
+    col_pos = _colored_cols.top();
+    _colored_cols.pop();
+    for (int i=0; i<_mat_size; i++) {
+      if (col_pos.second +1< _mat_size-i) {
+        attron(COLOR_PAIR(BLACK));
+      }
+      else {
+        attron(COLOR_PAIR(WHITE));
+      }
+      mvaddch(i, col_pos.first, ' ');
+      attroff(COLOR_PAIR(NORMAL));
+    }
+  }
 }
 
 void renderer::exit_screen() { endwin(); }
 
 void renderer::update_count(int acc, int swp, int comp, int recur) {
-  mvprintw(3, _mat_size + 1, "Accesses: %d", acc);
-  mvprintw(7, _mat_size + 1, "Swap: %d", swp);
-  mvprintw(5, _mat_size + 1, "Comparisons: %d", comp);
-  mvprintw(9, _mat_size + 1, "Recursive: %d", recur);
+  /* mvprintw(3, _mat_size + 1, "Accesses: %d", acc); */
+  mvprintw(3, _mat_size + 11, "%d", acc);
+  /* mvprintw(7, _mat_size + 1, "Swap: %d", swp); */
+  mvprintw(7, _mat_size + 7, "%d", swp);
+  /* mvprintw(5, _mat_size + 1, "Comparisons: %d", comp); */
+  mvprintw(5, _mat_size + 14, "%d", comp);
+  /* mvprintw(9, _mat_size + 1, "Recursive: %d", recur); */
+  mvprintw(9, _mat_size + 12, "%d", recur);
 }
 
 void renderer::set_name(std::string algo_name) {
+  attron(COLOR_PAIR(NORMAL));
   mvaddstr(1, _mat_size +1, algo_name.c_str());
+  attroff(COLOR_PAIR(NORMAL));
   
   _algorithm_name = algo_name;
+}
+
+void renderer::cli_refresh_screen() {
+  refresh();
 }

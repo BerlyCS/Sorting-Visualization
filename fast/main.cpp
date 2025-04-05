@@ -5,7 +5,10 @@
 #include <ctime>
 #include <ncurses.h>
 int main(int argc, char* argv[]) {
-  sort_array v(10);
-  BubbleSort(v);
-  Selection_Sort(v);
+  sort_array v(20);
+  /* BubbleSort(v); */
+  Insertion_Sort(v);
+  /* CocktailSort(v); */
+  /* QuickSort(v, 0, 9); */
+  /* MergeSort(v, 0, 19); */
 }

@@ -1,15 +1,14 @@
-libs=-lncurses
-cflags=-ggdb3 -Wall -Wdeprecated -O0
-CC=g++
-main: main.cpp renderer.cpp renderer.hpp sort_array.cpp sort_array.hpp
-	g++ main.o renderer.o sort_array.o -o main $(cflags) $(libs)
+CC = g++
+CFLAGS = -Wall -Wdeprecated -Oz
+LIBS = -lncurses
 
+OBJS = main.o renderer.o sort_array.o algorithms.o
 
-main.o:
-	g++ main.cpp -c -o main.o
+main: $(OBJS)
+	$(CC) $(OBJS) -o $@ $(LIBS)
 
-renderer.o:
-	g++ renderer.cpp -c -o renderer.o
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
 
-sort_array.o:
-	g++ sort_array.cpp -c -o sort_array.o
+clean:
+	rm -f *.o main
